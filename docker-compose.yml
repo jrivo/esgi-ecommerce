@@ -83,6 +83,13 @@ services:
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./back/api-platform/docker/db/data:/var/lib/postgresql/data:rw
 
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports: 
+      - 15672:15672
+      - 5672:5672
+
+
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
