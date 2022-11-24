@@ -4,7 +4,7 @@ const fs = require('fs')
 const instant = new Date();
 
 const minute = instant.getHours() + ":" + instant.getMinutes() + ":" + instant.getSeconds() + ':' + instant.getMilliseconds();
-fs.open('consommateur.log','w', function (err,file){
+fs.open('consumer.log','w', function (err,file){
     if(err) throw err ;
 })
 
@@ -19,7 +19,8 @@ amqp.connect('amqp://localhost',(err,connection) => {
         }
 
         let queue = 'channel_one';
-        let msg = 'Direct Exchange';
+        //let msg = 'Direct Exchange';
+        //ici seront mise les informations à recuperer des API du back
         const content = 'Le message"' + msg + '" à été envoyé à ' + minute + '\n' ;
 
         channel.assertQueue(queue,{
