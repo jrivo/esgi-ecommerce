@@ -18,7 +18,7 @@ function validate(values) {
         errors.password = "Required";
     }
     if (!values.color) {
-        errors.password = "Required";
+        errors.color = "Required";
     }
     return errors;
 }
