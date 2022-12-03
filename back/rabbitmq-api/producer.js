@@ -1,12 +1,18 @@
 const amqp = require('amqplib/callback_api');
 let i = 0;
 const fs = require('fs')
-const instant = new Date();
+//tableau ou on stockera les données qui seront envoyés au consommateur 
+//let infos = [] 
 
-const minute = instant.getHours() + ":" + instant.getMinutes() + ":" + instant.getSeconds() + ':' + instant.getMilliseconds();
-fs.open('consumer.log','w', function (err,file){
-    if(err) throw err ;
-})
+
+//Récuperation des données du front (displayOrders()) 
+//et envoie au consommateur sous format json
+
+/*
+fetch('http://localhost:3000/').
+.then(res => res.json())
+.then(res.push(infos) )
+*/
 
 amqp.connect('amqp://localhost',(err,connection) => {
     if(err){
@@ -19,25 +25,15 @@ amqp.connect('amqp://localhost',(err,connection) => {
         }
 
         let queue = 'channel_one';
-        //let msg = 'Direct Exchange';
-        //ici seront mise les informations à recuperer des API du back
-        const content = 'Le message"' + msg + '" à été envoyé à ' + minute + '\n' ;
+        //envoie des informations sous format json 
+        //let msg = infos;
 
         channel.assertQueue(queue,{
             durable : false
         });
 
-        let i = 0;
-        do {
-            i = i +1;
-            channel.sendToQueue(queue,Buffer.from(msg));
-            console.log('Le producteur à envoyé %s',msg) ;
-            fs.writeFile('producer.log',content,err => {
-                if(err){
-                    console.error(err);
-                    return
-                }
-            })
-        }while (i<5)
+        channel.sendToQueue(queue,Buffer.from(msg));
+        console.log('Le producteur à envoyé %s',msg) ;
+
     })
 })

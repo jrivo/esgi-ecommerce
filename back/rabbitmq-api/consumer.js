@@ -1,12 +1,8 @@
 const amqp = require('amqplib/callback_api');
 let i = 0;
 const fs = require('fs')
-const instant = new Date();
 
-const minute = instant.getHours() + ":" + instant.getMinutes() + ":" + instant.getSeconds() + ':' + instant.getMilliseconds();
-fs.open('producer.log','w', function (err,file){
-    if(err) throw err ;
-})
+
 
 amqp.connect('amqp://localhost',(err,connection) => {
     if(err){
@@ -19,19 +15,23 @@ amqp.connect('amqp://localhost',(err,connection) => {
         }
 
         let queue = 'channel_one';
-        const content = 'Le consommateur à reçu le message à ' + minute + '\n' ;
 
         channel.assertQueue(queue,{
             durable : false
         });
 
         console.log(" Waiting for messages in %s . To exit press CTRL+C",queue);
+        //reception des informations 
         channel.consume(queue,(msg) => {
-            fs.writeFile('consommateur.log',content,err => {
+            //ecriture du PDF 
+            fs.writeFile('biling.pdf',content,err => {
                 if(err) {
                     console.error(err);
                     return
                 }
+                /*
+                else  = écriture du PDF 
+                */
             })
         }, {
             noAck : true
