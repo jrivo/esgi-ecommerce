@@ -1,5 +1,4 @@
 const amqp = require('amqplib/callback_api');
-let i = 0;
 const fs = require('fs')
 
 
