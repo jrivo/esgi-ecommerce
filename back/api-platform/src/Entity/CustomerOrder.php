@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CustomerOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
@@ -28,6 +29,9 @@ class CustomerOrder
 
     #[ORM\ManyToMany(targetEntity: ProductOrder::class, inversedBy: 'customerOrders')]
     private Collection $productOrders;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $datetime = null;
 
     public function __construct()
     {
@@ -95,6 +99,18 @@ class CustomerOrder
     public function removeProductOrder(ProductOrder $productOrder): self
     {
         $this->productOrders->removeElement($productOrder);
+
+        return $this;
+    }
+
+    public function getDatetime(): ?\DateTimeInterface
+    {
+        return $this->datetime;
+    }
+
+    public function setDatetime(\DateTimeInterface $datetime): self
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }
