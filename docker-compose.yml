@@ -40,6 +40,22 @@ services:
     environment:
       - ENTRYPOINT_HOST=0.0.0.0
     command: sh -c "npm install && npm run dev"
+    labels:
+      - "traefik.http.routers.pwa.rule=Host(`pwa.localhost`)"
+
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.9
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
 
   caddy:
     build:
@@ -50,7 +66,7 @@ services:
       - pwa
     environment:
       PWA_UPSTREAM: pwa:3000
-      SERVER_NAME: ${SERVER_NAME:-localhost}, caddy:80
+      SERVER_NAME: ${SERVER_NAME:-http://localhost}, caddy:80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
     restart: unless-stopped
@@ -61,7 +77,7 @@ services:
     ports:
       # HTTP
       - target: 80
-        published: ${HTTP_PORT:-80}
+        published: ${HTTP_PORT:-81}
         protocol: tcp
       # HTTPS
       - target: 443
@@ -71,6 +87,9 @@ services:
       - target: 443
         published: ${HTTP3_PORT:-443}
         protocol: udp
+    labels:
+      - "traefik.http.routers.api-platform.rule=Host(`api-platform.localhost`)"
+      - "traefik.http.services.api-platform.loadbalancer.server.port=443"
     
   ms-product:
     build: ./back/product
@@ -79,6 +98,8 @@ services:
       - 5000:5000
     environment:
       - PORT=5000
+    labels:
+      - "traefik.http.routers.ms-product.rule=Host(`ms-product.localhost`)"
 
 ###> doctrine/doctrine-bundle ###
   database:
