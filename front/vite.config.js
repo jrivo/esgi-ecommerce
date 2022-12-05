@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const host = process.env.ENTRYPOINT_HOST || 'localhost'
+const host = process.env.ENTRYPOINT_HOST || '0.0.0.0'
 
 // https://vitejs.dev/config/
 export default defineConfig({
