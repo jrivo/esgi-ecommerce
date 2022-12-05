@@ -1,4 +1,4 @@
-# RabbitMQ
+# Billing
 
 ## Installation
 
@@ -9,6 +9,8 @@ npm install amqplib
 
 ## Usage
 
+### RabbitMQ
+
 Pour ouvrir l'interface de rabbitmq , une fois le docker démarré , aller sur :
 
 ```
@@ -17,22 +19,22 @@ username : guest
 password : guest
 ```
 
-### Use case
+### Minio
 
--   Un producteur
+Minio est une alternative gratuite à Amazon S3 afin de créer des bucket S3 gratuits
 
-Pour le démarrer :
+## Use case
+
+-   Un producteur (producer.js) envoie le message à partir des données fourni par le microservices de paiement
 
 ```bash
 node producer.js
 ```
 
--   Un consomamteur
-
-Pour le démarrer :
+-   Un consomamteur (app.js) consomme les messages , recupère les informations , génère un PDF ,l'enregistre dans un bucket S3 et le rend disponible au télechargement
 
 ```bash
-node consumer.js
+node app.js
 ```
 
 ## Contributing

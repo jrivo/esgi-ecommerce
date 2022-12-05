@@ -1,18 +1,18 @@
 const amqp = require('amqplib/callback_api');
-let i = 0;
 const fs = require('fs')
-//tableau ou on stockera les données qui seront envoyés au consommateur 
-//let infos = [] 
 
 
-//Récuperation des données du front (displayOrders()) 
-//et envoie au consommateur sous format json
 
-/*
-fetch('http://localhost:3000/').
-.then(res => res.json())
-.then(res.push(infos) )
-*/
+//créer un objet ici pour envoyer les infos au consommateur 
+export default function Payment (id , date , price , isDone) {
+    this.id = id ;
+    this.date = date ;
+    this price = price ;
+    this isDone= isDone
+}
+
+const mypayment = new Payment(1,'1-01-22', 30, 'yes')
+
 
 amqp.connect('amqp://localhost',(err,connection) => {
     if(err){
@@ -24,13 +24,13 @@ amqp.connect('amqp://localhost',(err,connection) => {
             throw err;
         }
 
-        let queue = 'channel_one';
-        //envoie des informations sous format json 
-        let msg = infos;
+        let queue = 'channel_one';    
 
         channel.assertQueue(queue,{
             durable : false
         });
+
+
 
         channel.sendToQueue(queue,Buffer.from(msg));
         console.log('Le producteur à envoyé %s',msg) ;

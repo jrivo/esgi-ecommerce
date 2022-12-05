@@ -11,6 +11,7 @@
     "inherits": "^2.0.4",
     "isarray": "^0.0.1",
     "ms": "^2.1.2",
+    "pdfkit": "^0.13.0",
     "querystringify": "^2.2.0",
     "readable-stream": "^1.1.14",
     "requires-port": "^1.0.0",
