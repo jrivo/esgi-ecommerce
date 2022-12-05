@@ -20,12 +20,12 @@ class Cart
     #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
     private ?User $customer = null;
 
-    #[ORM\ManyToMany(targetEntity: ProductOrder::class, inversedBy: 'carts')]
-    private Collection $products;
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: ProductOrder::class)]
+    private Collection $productOrders;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->productOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,23 +48,29 @@ class Cart
     /**
      * @return Collection<int, ProductOrder>
      */
-    public function getProducts(): Collection
+    public function getProductOrders(): Collection
     {
-        return $this->products;
+        return $this->productOrders;
     }
 
-    public function addProduct(ProductOrder $product): self
+    public function addProductOrder(ProductOrder $productOrder): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
+        if (!$this->productOrders->contains($productOrder)) {
+            $this->productOrders->add($productOrder);
+            $productOrder->setCart($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(ProductOrder $product): self
+    public function removeProductOrder(ProductOrder $productOrder): self
     {
-        $this->products->removeElement($product);
+        if ($this->productOrders->removeElement($productOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($productOrder->getCart() === $this) {
+                $productOrder->setCart(null);
+            }
+        }
 
         return $this;
     }

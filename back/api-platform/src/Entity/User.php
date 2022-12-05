@@ -2,19 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']],
-)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -24,34 +18,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(["user:read", "user:write"])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(["user:read", "user:write"])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[Groups(["user:write","user:read"])]
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
-    private Collection $sellingProducts;
-
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class)]
-    private Collection $orders;
+    private Collection $customerOrders;
 
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
 
     public function __construct()
     {
-        $this->sellingProducts = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->customerOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,59 +112,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Product>
-     */
-    public function getSellingProducts(): Collection
-    {
-        return $this->sellingProducts;
-    }
-
-    public function addSellingProduct(Product $sellingProduct): self
-    {
-        if (!$this->sellingProducts->contains($sellingProduct)) {
-            $this->sellingProducts->add($sellingProduct);
-            $sellingProduct->setSeller($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSellingProduct(Product $sellingProduct): self
-    {
-        if ($this->sellingProducts->removeElement($sellingProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($sellingProduct->getSeller() === $this) {
-                $sellingProduct->setSeller(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, CustomerOrder>
      */
-    public function getOrders(): Collection
+    public function getCustomerOrders(): Collection
     {
-        return $this->orders;
+        return $this->customerOrders;
     }
 
-    public function addOrder(CustomerOrder $order): self
+    public function addCustomerOrder(CustomerOrder $customerOrder): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setCustomer($this);
+        if (!$this->customerOrders->contains($customerOrder)) {
+            $this->customerOrders->add($customerOrder);
+            $customerOrder->setCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(CustomerOrder $order): self
+    public function removeCustomerOrder(CustomerOrder $customerOrder): self
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->customerOrders->removeElement($customerOrder)) {
             // set the owning side to null (unless already changed)
-            if ($order->getCustomer() === $this) {
-                $order->setCustomer(null);
+            if ($customerOrder->getCustomer() === $this) {
+                $customerOrder->setCustomer(null);
             }
         }
 

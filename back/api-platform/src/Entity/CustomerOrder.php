@@ -6,7 +6,6 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CustomerOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
@@ -18,7 +17,8 @@ class CustomerOrder
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(inversedBy: 'customerOrders')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $customer = null;
 
     #[ORM\Column(length: 255)]
@@ -27,11 +27,8 @@ class CustomerOrder
     #[ORM\Column]
     private ?float $totalPrice = null;
 
-    #[ORM\ManyToMany(targetEntity: ProductOrder::class, inversedBy: 'customerOrders')]
+    #[ORM\OneToMany(mappedBy: 'customerOrder', targetEntity: ProductOrder::class)]
     private Collection $productOrders;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $datetime = null;
 
     public function __construct()
     {
@@ -91,6 +88,7 @@ class CustomerOrder
     {
         if (!$this->productOrders->contains($productOrder)) {
             $this->productOrders->add($productOrder);
+            $productOrder->setCustomerOrder($this);
         }
 
         return $this;
@@ -98,19 +96,12 @@ class CustomerOrder
 
     public function removeProductOrder(ProductOrder $productOrder): self
     {
-        $this->productOrders->removeElement($productOrder);
-
-        return $this;
-    }
-
-    public function getDatetime(): ?\DateTimeInterface
-    {
-        return $this->datetime;
-    }
-
-    public function setDatetime(\DateTimeInterface $datetime): self
-    {
-        $this->datetime = $datetime;
+        if ($this->productOrders->removeElement($productOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($productOrder->getCustomerOrder() === $this) {
+                $productOrder->setCustomerOrder(null);
+            }
+        }
 
         return $this;
     }

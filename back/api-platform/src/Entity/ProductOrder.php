@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductOrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductOrderRepository::class)]
@@ -17,8 +15,8 @@ class ProductOrder
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'productOrders')]
-    private ?Product $product = null;
+    #[ORM\Column]
+    private ?int $productId = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
@@ -26,31 +24,25 @@ class ProductOrder
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[ORM\ManyToMany(targetEntity: CustomerOrder::class, mappedBy: 'productOrders')]
-    private Collection $customerOrders;
+    #[ORM\ManyToOne(inversedBy: 'productOrders')]
+    private ?CustomerOrder $customerOrder = null;
 
-    #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'products')]
-    private Collection $carts;
-
-    public function __construct()
-    {
-        $this->customerOrders = new ArrayCollection();
-        $this->carts = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'productOrders')]
+    private ?Cart $cart = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduct(): ?Product
+    public function getProductId(): ?int
     {
-        return $this->product;
+        return $this->productId;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProductId(int $productId): self
     {
-        $this->product = $product;
+        $this->productId = $productId;
 
         return $this;
     }
@@ -72,63 +64,33 @@ class ProductOrder
         return $this->discount;
     }
 
-    public function setDiscount(?int $discount): self
+    public function setDiscount(int $discount): self
     {
         $this->discount = $discount;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, CustomerOrder>
-     */
-    public function getCustomerOrders(): Collection
+    public function getCustomerOrder(): ?CustomerOrder
     {
-        return $this->customerOrders;
+        return $this->customerOrder;
     }
 
-    public function addCustomerOrder(CustomerOrder $customerOrder): self
+    public function setCustomerOrder(?CustomerOrder $customerOrder): self
     {
-        if (!$this->customerOrders->contains($customerOrder)) {
-            $this->customerOrders->add($customerOrder);
-            $customerOrder->addProductOrder($this);
-        }
+        $this->customerOrder = $customerOrder;
 
         return $this;
     }
 
-    public function removeCustomerOrder(CustomerOrder $customerOrder): self
+    public function getCart(): ?Cart
     {
-        if ($this->customerOrders->removeElement($customerOrder)) {
-            $customerOrder->removeProductOrder($this);
-        }
-
-        return $this;
+        return $this->cart;
     }
 
-    /**
-     * @return Collection<int, Cart>
-     */
-    public function getCarts(): Collection
+    public function setCart(?Cart $cart): self
     {
-        return $this->carts;
-    }
-
-    public function addCart(Cart $cart): self
-    {
-        if (!$this->carts->contains($cart)) {
-            $this->carts->add($cart);
-            $cart->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCart(Cart $cart): self
-    {
-        if ($this->carts->removeElement($cart)) {
-            $cart->removeProduct($this);
-        }
+        $this->cart = $cart;
 
         return $this;
     }
