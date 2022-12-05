@@ -19,7 +19,7 @@ password : guest
 
 ### Use case
 
--   Un producteur : récupère les informations nécessaires pour la facture ( à partir de displayOrder()) et les envoit au consomateur
+-   Un producteur
 
 Pour le démarrer :
 
@@ -27,7 +27,7 @@ Pour le démarrer :
 node producer.js
 ```
 
--   Un consomamteur : recupère les informations de displayOrder() et crée le PDF ( format de la facture reste à choisir )
+-   Un consomamteur
 
 Pour le démarrer :
 

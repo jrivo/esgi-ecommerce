@@ -26,7 +26,7 @@ amqp.connect('amqp://localhost',(err,connection) => {
 
         let queue = 'channel_one';
         //envoie des informations sous format json 
-        //let msg = infos;
+        let msg = infos;
 
         channel.assertQueue(queue,{
             durable : false
