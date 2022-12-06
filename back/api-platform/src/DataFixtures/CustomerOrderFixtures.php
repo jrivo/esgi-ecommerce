@@ -24,7 +24,7 @@ class CustomerOrderFixtures extends Fixture implements DependentFixtureInterface
                 ->setCustomer($faker->randomElement($users))
                 ->setStatus($faker->randomElement(['pending', 'paid', 'shipped', 'delivered', 'canceled']));
                 // ->setDatetime($faker->dateTimeBetween('-1 year', 'now'));
-            for ($y = 0; $y < $faker->randomNumber(1, 3); $y++) {
+            for ($y = 0; $y < $faker->randomNumber(2, 3); $y++) {
                 $customerOrder->addProductOrder($faker->randomElement($productOrders));
             }
 

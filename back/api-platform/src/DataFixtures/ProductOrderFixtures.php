@@ -15,11 +15,11 @@ class ProductOrderFixtures extends Fixture
         for ($i = 0; $i < 100; $i++) {
             $category = (new ProductOrder)
                 ->setProductId($faker->randomNumber(1, 100))
-                ->setQuantity($faker->randomNumber(1, 10));
+                ->setQuantity($faker->randomNumber(1, 10))
+                ->setDiscount($faker->randomNumber(1, 10));
+
+            $manager->persist($category);
+            $manager->flush();
         }
-
-        $manager->persist($category);
-        $manager->flush();
     }
-
 }

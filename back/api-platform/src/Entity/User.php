@@ -24,12 +24,32 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
 )]
-#[GetCollection()]
-#[Get()]
+#[GetCollection(
+    security: 'is_granted("ROLE_ADMIN")',
+    normalizationContext: ['groups' => ['user:read','user:cget']],
+)]
+#[Get(
+    security: 'is_granted("ROLE_ADMIN") or object == user',
+    normalizationContext: ['groups' => ['user:read','user:get']],
+)]
 #[Post(processor: UserPasswordHasher::class)]
-#[Put(processor: UserPasswordHasher::class)]
-#[Patch(processor: UserPasswordHasher::class)]
-#[Delete()]
+// #[Post(
+//     controller: UserForgottenPwdController::class,
+//     name: 'user_forgotten_pwd',
+//     path: '/users/{id}/forgotten-pwd',
+//     security: 'is_granted("ROLE_ADMIN") or object == user',
+// )]
+#[Put(
+    processor: UserPasswordHasher::class,
+    security: 'is_granted("ROLE_ADMIN") or object == user',
+)]
+#[Patch(
+    processor: UserPasswordHasher::class,
+    security: 'is_granted("ROLE_ADMIN") or object == user',
+)]
+#[Delete(
+    security: 'is_granted("ROLE_ADMIN") or object == user',
+)]
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -48,23 +68,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     // #[Groups(["user:read", "user:write"])]
     #[ORM\Column]
-    #[Groups(["user:create", "user:update","user:read"])]
+    #[Groups(["user:read","user:create", "user:update"])]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Groups(["user:read"])]
     private ?string $password = null;
 
     #[Assert\NotBlank(groups: ['user:create'])]
     #[SerializedName('password')]
     #[Groups(['user:create', 'user:update'])]
     private ?string $plainPassword = null;
-    
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class,cascade: ["persist","remove"])]
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class, cascade: ["persist", "remove"])]
     private Collection $customerOrders;
 
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
