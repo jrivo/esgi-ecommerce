@@ -79,17 +79,8 @@ services:
       - target: 80
         published: ${HTTP_PORT:-81}
         protocol: tcp
-      # HTTPS
-      - target: 443
-        published: ${HTTPS_PORT:-443}
-        protocol: tcp
-      # HTTP/3
-      - target: 443
-        published: ${HTTP3_PORT:-443}
-        protocol: udp
-    labels:
-      - "traefik.http.routers.api-platform.rule=Host(`api-platform.localhost`)"
-      - "traefik.http.services.api-platform.loadbalancer.server.port=443"
+    # labels:
+    #   - "traefik.http.routers.api-platform.rule=Host(`api-platform.localhost`)"
     
   ms-product:
     build: ./back/product
