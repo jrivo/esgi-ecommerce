@@ -23,7 +23,6 @@ class UserForgottenPwdController extends AbstractController
             'http' => array(
                 'header'  => "Content-Type: application/json",
                 'method'  => 'POST',
-                'api-key' => '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'
             )
         );
 
