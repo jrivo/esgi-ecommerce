@@ -22,13 +22,19 @@ connection.createChannel((err,channel) => {
         payment = new Payment();
         payment.id = parseInt(eventPayment.id);
         payment.date = eventPayment.date;
-        payment.id = parseInt(eventPayment.price);
-        payment.isDone = eventPayment.isDone
+        payment.price = parseInt(eventPayment.price);
+        payment.isDone = eventPayment.isDone;
+        //console.log(payment)
 
         // generation du PDF 
 
         const doc = new PDFDocument();
-        //écriture du PDF 
+        const line_one = "Date de l'achat : " + payment.date + "\n";
+        const line_two = "Prix : " + payment.price + "\n";
+        doc.
+        text('Facture numéro'+ payment.id, 100, 100);
+        text(line_one)
+        text(line_two)       
         doc.end()
 
 

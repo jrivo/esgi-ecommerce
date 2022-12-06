@@ -17,6 +17,7 @@
     "requires-port": "^1.0.0",
     "safe-buffer": "^5.1.2",
     "string_decoder": "^0.10.31",
+    "typeorm": "^0.3.11",
     "url-parse": "^1.5.10"
   },
   "scripts": {

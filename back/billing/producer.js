@@ -32,7 +32,7 @@ amqp.connect('amqp://localhost',(err,connection) => {
 
 
 
-        channel.sendToQueue(queue,Buffer.from(msg));
+        channel.sendToQueue(queue,Buffer.from(JSON.stringify(msg)));
         console.log('Le producteur à envoyé %s',msg) ;
 
     })
