@@ -91,15 +91,15 @@ services:
       - "traefik.http.routers.api-platform.rule=Host(`api-platform.localhost`)"
       - "traefik.http.services.api-platform.loadbalancer.server.port=443"
     
-  ms-product:
-    build: ./back/product
-    restart: unless-stopped
-    ports:
-      - 5000:5000
-    environment:
-      - PORT=5000
-    labels:
-      - "traefik.http.routers.ms-product.rule=Host(`ms-product.localhost`)"
+  # ms-product:
+  #   build: ./back/product
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5000:5000
+  #   environment:
+  #     - PORT=5000
+  #   labels:
+  #     - "traefik.http.routers.ms-product.rule=Host(`ms-product.localhost`)"
 
 ###> doctrine/doctrine-bundle ###
   database:
@@ -107,13 +107,22 @@ services:
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-app}
       # You should definitely change the password in production
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-!ChangeMe!}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-pwd}
       - POSTGRES_USER=${POSTGRES_USER:-app}
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d/
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./api/docker/db/data:/var/lib/postgresql/data
 ###< doctrine/doctrine-bundle ###
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-email@test.fr}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-pwd}
+    ports:
+      - 8099:80
 
   rabbitmq:
     image: rabbitmq:3.11-management
