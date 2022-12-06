@@ -27,7 +27,7 @@ class CustomerOrder
     #[ORM\Column]
     private ?float $totalPrice = null;
 
-    #[ORM\OneToMany(mappedBy: 'customerOrder', targetEntity: ProductOrder::class)]
+    #[ORM\OneToMany(mappedBy: 'customerOrder', targetEntity: ProductOrder::class,cascade: ["remove"])]
     private Collection $productOrders;
 
     public function __construct()

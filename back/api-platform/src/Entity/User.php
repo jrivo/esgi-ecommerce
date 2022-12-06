@@ -9,30 +9,62 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\State\UserPasswordHasher;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:create', 'user:update']],
+)]
+#[GetCollection()]
+#[Get()]
+#[Post(processor: UserPasswordHasher::class)]
+#[Put(processor: UserPasswordHasher::class)]
+#[Patch(processor: UserPasswordHasher::class)]
+#[Delete()]
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['user:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+
+    #[Groups(["user:read", "user:create", "user:update"])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    // #[Groups(["user:read", "user:write"])]
     #[ORM\Column]
+    #[Groups(["user:create", "user:update","user:read"])]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(["user:read"])]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class)]
+    #[Assert\NotBlank(groups: ['user:create'])]
+    #[SerializedName('password')]
+    #[Groups(['user:create', 'user:update'])]
+    private ?string $plainPassword = null;
+    
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class,cascade: ["persist","remove"])]
     private Collection $customerOrders;
 
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
@@ -99,7 +131,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
+
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $painPassword): self
+    {
+        $this->plainPassword = $painPassword;
 
         return $this;
     }
