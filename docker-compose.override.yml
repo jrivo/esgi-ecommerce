@@ -52,8 +52,8 @@ services:
     environment:
       - PORT=5000
     volumes:
-      - ./back/product:/usr/src/app
-    command: sh -c "yarn && yarn start:dev"
+      - ./back/product:/app
+    # command: sh -c "yarn && yarn start:dev"
 
   rabbitmq:
     image: rabbitmq:3.11-management
