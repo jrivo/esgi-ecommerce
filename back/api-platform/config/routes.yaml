@@ -9,3 +9,9 @@ kernel:
 auth:
     path: /auth
     methods: ['POST']
+
+role_checker:
+    path: /role_checker
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\RoleCheckerController::check
