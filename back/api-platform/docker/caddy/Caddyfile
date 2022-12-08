@@ -1,6 +1,7 @@
 {
     # Debug
-    {$CADDY_DEBUG}
+    # {$CADDY_DEBUG}
+    debug
 }
 
 {$SERVER_NAME}
@@ -44,12 +45,18 @@ route {
     # Comment the following line if you don't want Next.js to catch requests for HTML documents.
     # In this case, they will be handled by the PHP app.
     # reverse_proxy @pwa http://{$PWA_UPSTREAM}
-    # reverse_proxy /product/* http://ms-product:5000 {
-    #     rewrite {
-    #         r ^/product/(.*)$ 
-    #         to /{1}
-    #     }
-    # }
+
+    handle_path /product-service {
+        reverse_proxy http://ms-product:5000
+    }
+
+    handle_path /front {
+        reverse_proxy http://pwa:3000
+    }
+
+    handle_path /rabbit {
+        reverse_proxy http://rabbitmq:15672
+    }
 
     php_fastcgi unix//var/run/php/php-fpm.sock
     encode zstd gzip
