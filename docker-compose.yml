@@ -100,6 +100,7 @@ services:
       - 3010:3000
     environment:
       - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_WEBHOOK_KEY=${STRIPE_WEBHOOK_KEY}
     volumes:
       - ./back/payment:/app
 
