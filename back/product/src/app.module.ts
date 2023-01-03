@@ -11,7 +11,7 @@ import { ProductModule } from './product/product.module';
       host: 'database',
       port: 5432,
       username: 'app',
-      password: 'pwd',
+      password: '!ChangeMe!',
       database: 'product',
       autoLoadEntities: true,
       synchronize: true,
