@@ -16,13 +16,10 @@
 import Product from "../components/Product.vue";
 import Navbar from "../components/Navbar.vue";
 import { ref } from "vue";
+import { getAllProducts } from "../utils/apiCalls";
 
 const loadProducts = async () => {
-    const response = await fetch("http://localhost:5000/products");
-    const data = await response.json();
-    console.log("data", data);
-
-    // change products value
+    const data = await getAllProducts();
     products.value = data.map((product) => {
         return {
             id: product.id,
