@@ -14,6 +14,7 @@ const initialValues = reactive({
 // Fonction de validation du Form
 function validate(values) {
     console.log("validate", values);
+    console.log("---------------");
     const errors = {};
     if (!values.email) {
         errors.email = "Required";
@@ -23,19 +24,16 @@ function validate(values) {
     if (!values.password) {
         errors.password = "Required";
     }
-    if (!values.color) {
-        errors.color = "Required";
-    }
     return errors;
 }
 
 // Fonction à éxécuté lors de l'evement sumbit => validate OK (donnée valide)
 function print(val, { setIsSubmitting }) {
+    console.log("submitting");
     console.log(val);
     setIsSubmitting(true);
 }
 </script>
-
 <template>
     <div class="main-container">
         <div class="login-card">
@@ -44,10 +42,11 @@ function print(val, { setIsSubmitting }) {
                 :initialValues="initialValues"
                 :validate="validate"
                 @submit="print"
+                class="form"
             >
                 <h1 class="title">Login to your account</h1>
-                <!-- 
-                {{ JSON.stringify(values) }}
+
+                <!-- {{ JSON.stringify(values) }}
                 {{ errors }}
                 {{ isSubmitting }} -->
 
@@ -66,7 +65,7 @@ function print(val, { setIsSubmitting }) {
                 />
                 <VueField
                     name="button"
-                    value="submit "
+                    value="Login"
                     :disabled="isSubmitting"
                     type="submit"
                     class="submit-button"
