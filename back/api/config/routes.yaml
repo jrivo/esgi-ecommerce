@@ -11,7 +11,7 @@ auth:
     methods: ['POST']
 
 role_checker:
-    path: /role_checker
+    path: /role-checker
     methods: ['GET']
     defaults:
         _controller: App\Controller\RoleCheckerController::check
