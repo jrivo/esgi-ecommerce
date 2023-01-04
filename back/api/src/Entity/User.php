@@ -19,6 +19,7 @@ use ApiPlatform\Metadata\Put;
 use App\State\UserPasswordHasher;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\RegisterController;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['user:read']],
@@ -32,13 +33,13 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("ROLE_ADMIN") or object == user',
     normalizationContext: ['groups' => ['user:read','user:get']],
 )]
+#[Post(
+    normalizationContext: ['groups' => ['user:read','user:post']],
+    denormalizationContext: ['groups' => ['user:create']],
+    uriTemplate: '/register',
+    controller: RegisterController::class,
+)]
 #[Post(processor: UserPasswordHasher::class)]
-// #[Post(
-//     controller: UserForgottenPwdController::class,
-//     name: 'user_forgotten_pwd',
-//     path: '/users/{id}/forgotten-pwd',
-//     security: 'is_granted("ROLE_ADMIN") or object == user',
-// )]
 #[Put(
     processor: UserPasswordHasher::class,
     security: 'is_granted("ROLE_ADMIN") or object == user',
