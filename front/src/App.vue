@@ -1,12 +1,15 @@
 <script setup>
 import Navbar from "./components/Navbar.vue";
-import Products from "./views/Products.vue";
+import ProductsView from "./views/ProductsView.vue";
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
     <div class="app">
         <Navbar />
-        <Products class="products" />
+        <div class="page-container">
+            <RouterView />
+        </div>
     </div>
 </template>
 
@@ -17,6 +20,10 @@ import Products from "./views/Products.vue";
     width: 100%;
     height: 100%;
     background-color: #f5f5f5;
+}
+
+.page-container {
+    padding-top: 100px;
 }
 .logo {
     height: 6em;
