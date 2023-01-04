@@ -21,7 +21,6 @@ class RegisterController extends AbstractController
 
     public function __invoke(Request $request, ValidatorInterface $validator)
     {
-        // var_dump($request->getContent()->get('email'));
         $request_content = json_decode($request->getContent());
         $email = $request_content->email;
         $password = $request_content->password;
@@ -37,20 +36,5 @@ class RegisterController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return new JsonResponse('The user is created', 201);
-        // $email = $request->content->get('email');
-        // $password = $request->content->get('password');
-        // $roles = $request->content->get('roles');
-        // $user = new User();
-        // $user->setEmail($email);
-        // $user->setPassword($this->passwordHasher->hashPassword($user, $password));
-        // $user->setRoles($roles);
-        // $errors = $validator->validate($user);
-        // if (count($errors) > 0) {
-        //     return new JsonResponse((string) $errors, 400);
-        // }
-        // $entityManager = $this->getDoctrine()->getManager();
-        // $entityManager->persist($user);
-        // $entityManager->flush();
-        // return new JsonResponse('The user is created', 201);
     }
 }
