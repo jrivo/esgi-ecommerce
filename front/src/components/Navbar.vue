@@ -7,6 +7,9 @@
                 <router-link class="menu-item" to="/products"
                     >Products</router-link
                 >
+                <router-link class="menu-item" to="/sell-product"
+                    >Sell a product</router-link
+                >
             </div>
 
             <div class="auth-links-container" v-if="!isAuthenticated">
@@ -69,6 +72,8 @@ if (token) {
     cursor: pointer;
     /* remove link styles */
     text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
     color: #000;
 }
 

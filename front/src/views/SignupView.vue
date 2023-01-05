@@ -99,7 +99,7 @@ const handleSubmit = async () => {
 
 .login-card {
     width: 30vw;
-    height: 350px;
+    height: 420px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);

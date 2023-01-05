@@ -2,7 +2,7 @@ custom select field
 
 <template>
     <div class="select-field" @click="showOptions = !showOptions">
-        <div class="select-input">{{ value ? value.label : "Role" }}</div>
+        <div class="select-input">{{ value ? value.label : label }}</div>
         <div class="select-options" v-show="showOptions">
             <div
                 v-for="option in options"

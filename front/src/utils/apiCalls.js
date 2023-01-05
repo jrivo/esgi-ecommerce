@@ -38,4 +38,16 @@ const signup = async (email, password, role) => {
   return data;
 };
 
-export { getAllProducts, getProduct, login, signup };
+const createProduct = async (product) => {
+  const response = await fetch("http://localhost:5000/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  });
+  const data = await response.json();
+  return data;
+};
+
+export { getAllProducts, getProduct, login, signup, createProduct };
