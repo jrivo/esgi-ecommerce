@@ -24,4 +24,18 @@ const login = async (email, password) => {
   return data;
 };
 
-export { getAllProducts, getProduct, login };
+const signup = async (email, password, role) => {
+  const response = await fetch("http://localhost/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, role }),
+  });
+  console.log("Response", response);
+  const data = await response.json();
+  console.log("Signup data", data);
+  return data;
+};
+
+export { getAllProducts, getProduct, login, signup };

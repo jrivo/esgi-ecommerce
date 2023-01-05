@@ -11,7 +11,7 @@
 
             <div class="auth-links-container" v-if="!isAuthenticated">
                 <router-link class="menu-item" to="/login">Login</router-link>
-                <router-link class="menu-item" to="/login">Signup</router-link>
+                <router-link class="menu-item" to="/signup">Signup</router-link>
             </div>
             <div class="auth-links-container" v-else>
                 <router-link class="menu-item" to="/login">Logout</router-link>
