@@ -2,76 +2,44 @@
 import VueFormik from "@/components/Form/VueFormik.vue";
 import VueField from "@/components/Form/VueField.vue";
 import { reactive } from "vue";
+import { login } from "../utils/apiCalls";
+import { ref } from "vue";
+const email = ref("");
+const password = ref("");
 
-// Valeur du Form
-const initialValues = reactive({
-    email: "",
-    date: "",
-    password: "",
-    color: "",
-});
-
-// Fonction de validation du Form
-function validate(values) {
-    console.log("validate", values);
-    console.log("---------------");
-    const errors = {};
-    if (!values.email) {
-        errors.email = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-        errors.email = "Invalid email address";
-    }
-    if (!values.password) {
-        errors.password = "Required";
-    }
-    return errors;
-}
+const handleSubmit = async () => {
+    const repoose = await login({
+        email: email.value,
+        password: password.value,
+    });
+    console.log(repoose);
+};
 
 // Fonction à éxécuté lors de l'evement sumbit => validate OK (donnée valide)
-function print(val, { setIsSubmitting }) {
-    console.log("submitting");
-    console.log(val);
-    setIsSubmitting(true);
-}
 </script>
 <template>
     <div class="main-container">
         <div class="login-card">
-            <VueFormik
-                v-slot="{ values, errors, handleSubmit, isSubmitting }"
-                :initialValues="initialValues"
-                :validate="validate"
-                @submit="print"
-                class="form"
-            >
+            <form class="form" @submit.prevent="handleSubmit">
                 <h1 class="title">Login to your account</h1>
-
-                <!-- {{ JSON.stringify(values) }}
-                {{ errors }}
-                {{ isSubmitting }} -->
-
-                <!-- EXEMPLE => A MODIFIER -->
-                <VueField
+                <input
+                    v-model="email"
                     type="email"
-                    name="email"
                     placeholder="email"
                     class="input"
                 />
-                <VueField
+                <input
                     name="password"
                     type="password"
                     placeholder="password"
                     class="input"
+                    v-model="password"
                 />
-                <VueField
-                    name="button"
-                    value="Login"
-                    :disabled="isSubmitting"
-                    type="submit"
-                    class="submit-button"
-                />
+                <Button name="button" type="submit" class="submit-button">
+                    Login
+                </Button>
                 <!-- EXEMPLE => A MODIFIER -->
-            </VueFormik>
+            </form>
         </div>
     </div>
 </template>
