@@ -1,6 +1,8 @@
 <template>
-    <div class="products-container">
+    <div class="products-container" v-if="products && products.length">
         <!-- loop through products -->
+
+        <!-- if products are loaded, show them else show message -->
         <div v-for="product in products" :key="product.id">
             <Product
                 :name="product.name"
@@ -9,6 +11,12 @@
                 @click="() => $router.push(`/products/${product.id}`)"
             />
         </div>
+    </div>
+    <div class="empty-page-message-container" v-else>
+        <p class="empty-page-message">
+            There are no products to show, if you are a vendor you can
+            <a class="add-product">Add a new product</a>
+        </p>
     </div>
 </template>
 
@@ -72,5 +80,25 @@ loadProducts();
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease-in-out;
+}
+
+.empty-page-message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60vh;
+}
+
+.empty-page-message {
+    font-weight: 300;
+    color: #333;
+    text-align: center;
+}
+.add-product {
+    color: #333;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
 }
 </style>

@@ -7,12 +7,31 @@
                 <router-link class="menu-item" to="/products"
                     >Products</router-link
                 >
+                <router-link class="menu-item" to="/sell-product"
+                    >Sell a product</router-link
+                >
+            </div>
+
+            <div class="auth-links-container" v-if="!isAuthenticated">
+                <router-link class="menu-item" to="/login">Login</router-link>
+                <router-link class="menu-item" to="/signup">Signup</router-link>
+            </div>
+            <div class="auth-links-container" v-else>
+                <router-link class="menu-item" to="/login">Logout</router-link>
             </div>
         </div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+const isAuthenticated = ref(false);
+
+const token = localStorage.getItem("token");
+if (token) {
+    isAuthenticated.value = true;
+}
+</script>
 
 <style scoped>
 .navbar {
@@ -51,12 +70,20 @@
 .menu-item {
     margin: 0 1em;
     cursor: pointer;
+    /* remove link styles */
+    text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #000;
 }
 
 .menu-item:hover {
-    color: #ff6b6b;
+    /* color: #ff6b6b; */
 }
 
+.auth-links-container {
+    margin-right: 20px;
+}
 .navbar-links a {
     margin: 0 10px;
     text-decoration: none;
