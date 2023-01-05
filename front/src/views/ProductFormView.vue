@@ -1,5 +1,5 @@
 <script setup>
-import { signup } from "../utils/apiCalls";
+import { createProduct } from "../utils/apiCalls";
 import { ref } from "vue";
 import SelectField from "../components/Form/SelectField.vue";
 import CheckboxField from "../components/Form/CheckboxField.vue";
@@ -53,7 +53,7 @@ const image = ref("");
 const role = ref(undefined);
 
 const handleSubmit = async () => {
-    const response = await signup({
+    const response = await createProduct({
         name: name.value,
         price: price.value,
         colors: selectedColors.value,
@@ -62,6 +62,9 @@ const handleSubmit = async () => {
         images: [image.value],
     });
     console.log(response);
+    // redirect to products page
+
+    window.location.href = "/products";
 };
 
 // Fonction à éxécuté lors de l'evement sumbit => validate OK (donnée valide)
