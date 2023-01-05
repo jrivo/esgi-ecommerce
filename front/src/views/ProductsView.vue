@@ -15,7 +15,7 @@
     <div class="empty-page-message-container" v-else>
         <p class="empty-page-message">
             There are no products to show, if you are a vendor you can
-            <a class="add-product">Add a new product</a>
+            <a class="add-product" href="sell-product">Add a new product</a>
         </p>
     </div>
 </template>
@@ -23,7 +23,7 @@
 <script setup>
 import Product from "../components/Product.vue";
 import Navbar from "../components/Navbar.vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { getAllProducts } from "../utils/apiCalls";
 
 const loadProducts = async () => {
@@ -68,9 +68,11 @@ const loadProducts = async () => {
 //     },
 // ]
 
-const products = ref([]);
+watchEffect(() => {
+    loadProducts();
+});
 
-loadProducts();
+const products = ref([]);
 </script>
 
 <style scoped>
