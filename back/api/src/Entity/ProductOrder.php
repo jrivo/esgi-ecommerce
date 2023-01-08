@@ -58,6 +58,7 @@ class ProductOrder
 
     #[ORM\Column(nullable: true)]
     #[Groups(['product_order:get'])]
+    #[Assert\PositiveOrZero (groups : ['product_order:get'])]
     private ?int $discount = null;
 
     #[ORM\ManyToOne(inversedBy: 'productOrders')]
