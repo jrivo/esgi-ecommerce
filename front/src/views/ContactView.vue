@@ -56,6 +56,8 @@ function validate(values) {
 // Fonction à éxécuté lors de l'evement sumbit => validate OK (donnée valide)
 function print(val, { setIsSubmitting }) {
     setIsSubmitting(true);
+    initialValues.email = "";
+    initialValues.message = "";
 }
 </script>
 
