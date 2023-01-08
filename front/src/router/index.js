@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import FormView from "../views/FormView.vue";
 import ProductsView from "../views/ProductsView.vue";
 import ProductView from "../views/ProductView.vue";
 import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import ProductFormView from "../views/ProductFormView.vue";
+import ContactView from "../views/ContactView.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -46,9 +47,9 @@ const router = createRouter({
       component: SignupView,
     },
     {
-      path: "/formView",
-      name: "formView",
-      component: FormView,
+      path: "/contact",
+      name: "contactView",
+      component: ContactView,
     },
   ],
 });
