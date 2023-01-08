@@ -38,6 +38,10 @@
         </template>
 
         <button class="add-to-cart-button">ADD TO CART</button>
+        <button @click="checkout_sessions" class="checkout-button">
+            CHECKOUT
+        </button>
+        <p v-if="errorStatus">Oups Error Stripe, try later.</p>
         <template v-if="description">
             <div class="description-container">
                 <p class="standard-label">DETAILS</p>
@@ -51,9 +55,12 @@
 import { ref } from "vue";
 import ColorBox from "./ColorBox.vue";
 import { defineProps } from "vue";
-defineProps({
+const props = defineProps({
     name: {
         type: String,
+    },
+    id: {
+        type: Number,
     },
     price: {
         type: Number,
@@ -71,6 +78,7 @@ defineProps({
 
 const selectedColor = ref(0);
 const selectedSize = ref(0);
+const errorStatus = ref(false);
 
 const onColorClick = (index) => {
     selectedColor.value = index;
@@ -79,6 +87,49 @@ const onColorClick = (index) => {
 const onSizeClick = (index) => {
     console.log("size clicked", index);
     selectedSize.value = index;
+};
+
+const checkout_sessions = async () => {
+    const data = {
+        success_url: "http://localhost:3000",
+        cancel_url: `http://localhost:3000/products/${props.id}`,
+        line_items: [
+            {
+                price_data: {
+                    currency: "EUR",
+                    product_data: {
+                        name: props.name,
+                    },
+                    unit_amount_decimal: props.price * 100, //100 = 1€
+                },
+                quantity: 1,
+            },
+        ],
+    };
+    const url = `http://localhost:3010/create-checkout-session`;
+    try {
+        const resp = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then()
+            .catch((error) => {
+                throw new Error(`Fetch error: ${error.message}`);
+            });
+        if (resp.ok) {
+            errorStatus.value = false;
+            window.location.replace(await resp.json());
+        } else
+            throw new Error(
+                `Backend error (payment): ${resp.status} - ${resp.statusText}`
+            );
+    } catch (error) {
+        console.log(error);
+        errorStatus.value = true;
+    }
 };
 </script>
 
@@ -166,6 +217,18 @@ const onSizeClick = (index) => {
     width: 100%;
     height: 40px;
     background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 100;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.checkout-button {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(59, 39, 150);
     color: #fff;
     font-size: 14px;
     font-weight: 100;
