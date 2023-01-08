@@ -6,8 +6,8 @@ services:
     build:
       target: app_php_dev
     volumes:
-      - ./back/api-platform:/srv/app
-      - ./back/api-platform/docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+      - ./back/api:/srv/app
+      - ./back/api/docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
       # If you develop on Mac or Windows you can remove the vendor/ directory 
       #  from the bind-mount for better performance by enabling the next line:
       #- /srv/app/vendor
@@ -18,33 +18,36 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
 
-  # pwa:
-  #   build:
-  #     context: ./pwa
-  #     target: dev 
-  #   volumes:
-  #     - ./pwa:/srv/app
-  #   environment:
-  #     API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://caddy
-  #     API_PLATFORM_CREATE_CLIENT_OUTPUT: .
-  #     # On Linux, you may want to comment the following line for improved performance
-  #     WATCHPACK_POLLING: true
-
   pwa:
     image: node:lts-alpine3.16
     working_dir: /srv/app
     volumes:
       - ./front:/srv/app
     environment:
-      NEXT_PUBLIC_ENTRYPOINT: http://caddy
+      - ENTRYPOINT_HOST=0.0.0.0
     command: sh -c "npm install && npm run dev"
 
   caddy:
     volumes:
-      - ./back/api-platform/public:/srv/app/public:ro
-      - ./back/api-platform/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./back/api/public:/srv/app/public:ro
+      - ./back/api/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     environment:
       MERCURE_EXTRA_DIRECTIVES: demo
+
+  ms-product:
+    build: ./back/product
+    restart: unless-stopped
+    environment:
+      - PORT=5000
+    volumes:
+      - ./back/product:/app
+    command: sh -c "yarn && yarn start:dev"
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports: 
+      - 15672:15672
+      - 5672:5672
 
 ###> doctrine/doctrine-bundle ###
   database:

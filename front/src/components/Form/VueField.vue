@@ -1,28 +1,29 @@
 <template>
+    <!-- OPTI -->
+    <!-- IF as ==='string' html Natif @input="handleChange"  -->
+    <!-- IF as ==='Object' ComponentCustom v-model  -->
     <component
-        v-if="as === 'select'"
         :is="as"
         :name="name"
         :value="values[name]"
         @input="handleChange"
+        v-bind="$attrs"
     >
-        <slot>Options</slot>
+        <slot />
     </component>
-    <component
-        v-else
-        :is="as"
-        :type="type"
-        :name="name"
-        :placeholder="placeholder"
-        :value="values[name]"
-        @input="handleChange"
-    />
 </template>
+
+<script>
+// use normal <script> to declare options
+export default {
+    inheritAttrs: false,
+};
+</script>
 
 <script setup>
 import { inject, defineProps, toRaw } from "vue";
 
-const props = defineProps({
+defineProps({
     name: {
         type: String,
         required: true,
@@ -32,24 +33,13 @@ const props = defineProps({
         required: false,
         default: "input",
     },
-    type: {
-        type: String,
-        required: false,
-        default: "text",
-    },
-    placeholder: {
-        type: String,
-        required: false,
-        default: "",
-    },
 });
+
+// récupere valeur du Context Formik
+const values = inject("formik:values");
 
 const handleChange = function (e) {
     values[e.target.name] = e.target.value;
 };
 
-// récupere valeur du Context Formik
-const values = inject("formik:values");
-const errors = inject("formik:errors");
-console.log({ values: toRaw(values), errors: toRaw(errors) });
 </script>

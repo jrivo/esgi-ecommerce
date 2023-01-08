@@ -4,10 +4,16 @@ import VueField from "@/components/Form/VueField.vue";
 import { reactive } from "vue";
 
 // Valeur du Form
-const initialValues = reactive({ email: "", password: "", color: "" });
+const initialValues = reactive({
+    email: "",
+    date: "",
+    password: "",
+    color: "",
+});
 
 // Fonction de validation du Form
 function validate(values) {
+    console.log("validate", values);
     const errors = {};
     if (!values.email) {
         errors.email = "Required";
@@ -43,14 +49,26 @@ function print(val, { setIsSubmitting }) {
             {{ isSubmitting }}
 
             <form @submit.prevent="handleSubmit">
-                <VueField name="email" placeholder="email" />
+                <!-- EXEMPLE => A MODIFIER -->
+                <VueField type="email" name="email" placeholder="email" />
+                <VueField type="date" name="date" />
                 <VueField as="select" name="color">
                     <option value="red">Red</option>
                     <option value="green">Green</option>
                     <option value="blue">Blue</option>
                 </VueField>
-                <VueField name="password" type="password" />
-                <button type="submit" :disabled="isSubmitting">Submit</button>
+                <VueField
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                />
+                <VueField
+                    name="button"
+                    value="submit"
+                    :disabled="isSubmitting"
+                    type="submit"
+                />
+                <!-- EXEMPLE => A MODIFIER -->
             </form>
         </VueFormik>
     </main>
