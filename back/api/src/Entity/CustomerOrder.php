@@ -40,6 +40,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Delete(
     security: 'is_granted("ROLE_ADMIN")',
 )]
+
+
 class CustomerOrder
 {
     #[ORM\Id]

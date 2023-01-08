@@ -41,7 +41,7 @@
         <button @click="checkout_sessions" class="checkout-button">
             CHECKOUT
         </button>
-        <p v-if="errorStatus">Oups Error Stripe, try later.</p>
+        <p v-if="errorStatus">Something went wrong, please try again later.</p>
         <template v-if="description">
             <div class="description-container">
                 <p class="standard-label">DETAILS</p>
