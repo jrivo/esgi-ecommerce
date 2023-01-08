@@ -12,6 +12,7 @@
             :sizes="product.sizes"
             :colors="product.colors"
             :description="product.description"
+            :id="product.id"
         />
     </div>
 </template>
