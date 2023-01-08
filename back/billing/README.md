@@ -4,8 +4,10 @@
 
 ```bash
 Javascript :
-npm install amqplib
+npm install
 ```
+
+Pour installer tout les dépendance locales nécessaires
 
 ## Usage
 
@@ -19,22 +21,10 @@ username : guest
 password : guest
 ```
 
-### Minio
-
-Minio est une alternative gratuite à Amazon S3 afin de créer des bucket S3 gratuits
-
-## Use case
-
--   Un producteur (producer.js) envoie le message à partir des données fourni par le microservices de paiement
+Executer fichier pour telecharger pdf de test
 
 ```bash
-node producer.js
-```
-
--   Un consomamteur (app.js) consomme les messages , recupère les informations , génère un PDF ,l'enregistre dans un bucket S3 et le rend disponible au télechargement
-
-```bash
-node app.js
+node test.js
 ```
 
 ## Contributing
