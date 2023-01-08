@@ -13,6 +13,7 @@ const initialValues = reactive({
 
 // Fonction de validation du Form
 function validate(values) {
+    console.log("validate", values);
     const errors = {};
     if (!values.email) {
         errors.email = "Required";
