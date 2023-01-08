@@ -137,6 +137,7 @@ const checkout_sessions = async () => {
 .main-container {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     /* align-items: center; */
 }
 
