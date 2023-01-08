@@ -7,6 +7,8 @@
     >
         Form
     </slot>
+    <p v-if="isSubmitting">{{ messageValisation }}</p>
+    <p v-for="(value, name) in errors" :key="name">{{ name }}: {{ value }}</p>
 </template>
 
 <script setup>
@@ -21,6 +23,11 @@ const props = defineProps({
     validate: {
         type: Function,
         default: () => ({}),
+        required: false,
+    },
+    messageValisation: {
+        type: String,
+        default: "Form valide",
         required: false,
     },
 });

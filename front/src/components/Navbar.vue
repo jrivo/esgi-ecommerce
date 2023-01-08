@@ -10,6 +10,9 @@
                 <router-link class="menu-item" to="/sell-product"
                     >Sell a product</router-link
                 >
+                <router-link class="menu-item" to="/contact"
+                    >Contact</router-link
+                >
             </div>
 
             <div class="auth-links-container" v-if="!isAuthenticated">

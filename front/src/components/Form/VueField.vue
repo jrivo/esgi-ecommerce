@@ -37,11 +37,9 @@ defineProps({
 
 // récupere valeur du Context Formik
 const values = inject("formik:values");
-const errors = inject("formik:errors");
 
 const handleChange = function (e) {
     values[e.target.name] = e.target.value;
 };
 
-console.log({ values: toRaw(values), errors: toRaw(errors) });
 </script>
