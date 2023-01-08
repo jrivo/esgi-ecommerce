@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\ProductOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductOrderRepository::class)]
 #[ApiResource(
@@ -52,10 +53,12 @@ class ProductOrder
 
     #[ORM\Column]
     #[Groups(['product_order:read','customer_order:get'])]
+    #[Assert\PositiveOrZero (groups : ['product_order:read','customer_order:get'])]
     private ?int $quantity = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['product_order:get'])]
+    #[Assert\PositiveOrZero (groups : ['product_order:get'])]
     private ?int $discount = null;
 
     #[ORM\ManyToOne(inversedBy: 'productOrders')]

@@ -57,10 +57,12 @@ class CustomerOrder
 
     #[ORM\Column(length: 255)]
     #[Groups(['customer_order:read', 'customer_order:create', 'customer_order:update'])]
+    #[Assert\Length( max:255)]
     private ?string $status = null;
 
     #[ORM\Column]
     #[Groups(['customer_order:get', 'customer_order:create', 'customer_order:update'])]
+    #[Assert\PositiveOrZero (groups : ['customer_order:get'])]
     private ?float $totalPrice = null;
 
     #[ORM\OneToMany(mappedBy: 'customerOrder', targetEntity: ProductOrder::class, cascade: ["remove"])]
