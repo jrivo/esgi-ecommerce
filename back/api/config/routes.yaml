@@ -1,0 +1,17 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
+    
+auth:
+    path: /auth
+    methods: ['POST']
+
+role_checker:
+    path: /role-checker
+    methods: ['GET']
+    defaults:
+        _controller: App\Controller\RoleCheckerController::check

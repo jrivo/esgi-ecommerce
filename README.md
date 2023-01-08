@@ -1,70 +1,24 @@
-# esgi-ecommerce
+# Project
 
-## Présentation
+- Launch project
 
-### Equipe 5 IWJ
+```
+sudo docker compose up -d
+```
 
-- DAUDÉ Maxime
-- RIVO Jonathan
-- ZIANI Amine
-- MBOMBO MOKONDA Christ
+- API-Platform : http://localhost/ (http://localhost/docs for the documentation)
 
-### Sujet
+- Product service : http://localhost/product-service
 
-E-commerce de produit
+- Billing service : http://localhost:15672
 
-Les roles : client / vendeur / admin
+- Payment service : ???
 
-Les workflows sont :
+## API-Platform
 
-- Gestion du panier
-- Commande avec Stripe ou Interne ??
-- Gestion de la facturation
+- Commandes
 
-Les micro-services sont :
-
-- Gestion de produit
-- Gestion de paiement
-- Gestion de facture
-
-## Contraintes Techniques
-
-- Front VueJS (mise en Prod)
-- Au moins 5 entités sur vos API
-- Au minimum, deux micro-services
-- Il doit y avoir l’exercice VueMik dans votre projet (Formik)
-
-## Soutenance
-
-Temps :
-
-- 10 min de présentation
-- 10 min de question
-
-Consignes :
-
-- Présentation rapide de votre concept (à l’oral)
-- Présentation rapide des API (2’ max)
-- Présentation rapide des micro-services (2’ max)
-- Démonstration VueJS
-- Présentation des différents Workflow
-
-Attention : Aucune démonstration de code n’est demandé !
-
-## Rendu final
-
-PDF de présentation du projet
-
-- Présentation du concept du projet
-- Modélisation de votre BDD au format MPD
-- Présentation des workflow de votre application
-- Présentation des micro-services
-- Lien doc API platform
-- Lien de votre front VueJS
-- Lien de votre Github (une seul)
-  - Nous ne notons que la branch Master
-  - les commits push avant la veille de votre oral à 23h52
-
-Vous devez TOUS commit sur votre GIT
-
-Rendu à faire sur MyGES la veille de votre oral à 23h52 max
+```
+sudo docker compose exec php composer install
+sudo docker compose exec php bin/console d:f:l
+```

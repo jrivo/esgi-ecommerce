@@ -1,0 +1,35 @@
+{
+  "name": "rabbitmq-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "## Installation",
+  "main": "app.js",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "axios": "^1.2.2",
+    "buffer-more-ints": "^1.0.0",
+    "core-util-is": "^1.0.3",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "express": "^4.18.2",
+    "inherits": "^2.0.4",
+    "isarray": "^0.0.1",
+    "ms": "^2.1.2",
+    "nodemon": "^2.0.20",
+    "pdfkit": "^0.13.0",
+    "querystringify": "^2.2.0",
+    "readable-stream": "^1.1.14",
+    "requires-port": "^1.0.0",
+    "safe-buffer": "^5.1.2",
+    "string_decoder": "^0.10.31",
+    "typeorm": "^0.3.11",
+    "url-parse": "^1.5.10"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
