@@ -64,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[Groups(["user:read", "user:create", "user:update"])]
+    #[Assert\NotBlank(groups: ['user:create'])] 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
