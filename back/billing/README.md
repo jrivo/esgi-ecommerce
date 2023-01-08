@@ -1,13 +1,17 @@
-# RabbitMQ
+# Billing
 
 ## Installation
 
 ```bash
 Javascript :
-npm install amqplib
+npm install
 ```
 
+Pour installer tout les dépendance locales nécessaires
+
 ## Usage
+
+### RabbitMQ
 
 Pour ouvrir l'interface de rabbitmq , une fois le docker démarré , aller sur :
 
@@ -17,22 +21,10 @@ username : guest
 password : guest
 ```
 
-### Use case
-
--   Un producteur : récupère les informations nécessaires pour la facture ( à partir de displayOrder()) et les envoit au consomateur
-
-Pour le démarrer :
+Executer fichier pour telecharger pdf de test
 
 ```bash
-node producer.js
-```
-
--   Un consomamteur : recupère les informations de displayOrder() et crée le PDF ( format de la facture reste à choisir )
-
-Pour le démarrer :
-
-```bash
-node consumer.js
+node test.js
 ```
 
 ## Contributing
